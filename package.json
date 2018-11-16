@@ -1,0 +1,9 @@
+{
+  "name": "sekai-frontend",
+  "version": "0.0.1",
+  "private": true,
+  "devDependencies": {
+    "rollup": "^0.67.1",
+    "uglify-es": "^3.3.9"
+  }
+}

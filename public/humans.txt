@@ -1,0 +1,7 @@
+Developed by <https://wark.io/>
+
+Technologies used:
+
+ - Laravel 5.7
+ - Mithril.js 1.1.6
+ - Nginx
