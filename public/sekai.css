@@ -160,7 +160,7 @@ main > form.login {
 	left: 50%;
 	transform: translateX(-50%);
 	width: 400px;
-  max-width: 80%;
+	max-width: 80%;
 }
 
 main > form.login input,
