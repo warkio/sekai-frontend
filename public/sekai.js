@@ -16,6 +16,9 @@ import { state } from './js/state.js';
 
 m.route(document.body, '/', {
     '/': {
+        onmatch: async () => {
+            await state.refreshSession();
+        },
         render: () => {
             state.setCurrentRouteName('forumList');
             state.setTitle();
@@ -24,6 +27,9 @@ m.route(document.body, '/', {
         },
     },
     '/login': {
+        onmatch: async () => {
+            await state.refreshSession();
+        },
         render: () => {
             state.setCurrentRouteName('login');
             state.setTitle('Login');
@@ -32,6 +38,9 @@ m.route(document.body, '/', {
         },
     },
     '/register': {
+        onmatch: async () => {
+            await state.refreshSession();
+        },
         render: () => {
             state.setCurrentRouteName('register');
             state.setTitle('Register');

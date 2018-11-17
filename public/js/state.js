@@ -22,6 +22,8 @@ function resolve(path) {
     return API_URL_PREFIX + path;
 }
 
+const SESSION_CACHE_TTL = 10 * 1000;
+
 const INITIAL_DATA = {
     token: null,
 };
@@ -30,6 +32,8 @@ const state = {
     data: JSON.parse(JSON.stringify(INITIAL_DATA)),
 
     currentRouteName: null,
+    sessionLastCheckedAt: null,
+    csrfToken: null,
 
     setTitle(title=null) {
         if (title === null) {
@@ -64,21 +68,82 @@ const state = {
         state.currentRouteName = name;
     },
 
-    getToken() {
+    async getCsrfToken() {
         const method = 'GET';
         const url = resolve('/token');
 
-        return m.request({
+        const { token } = await m.request({
             method,
             url,
             withCredentials: true,
-        })
-            .then((resp) => {
-                console.log(resp);
-            })
-            .catch((err) => {
-                console.error(err.stack);
-            });
+        });
+
+        state.csrfToken = token;
+
+        return state.csrfToken;
+    },
+
+    async refreshSession() {
+        if (state.sessionLastCheckedAt === null || Date.now() - state.sessionLastCheckedAt > SESSION_CACHE_TTL) {
+            await state.getCsrfToken();
+            state.sessionLastCheckedAt = Date.now();
+        }
+    },
+
+    clearSessionCache() {
+        state.sessionLastCheckedAt = null;
+    },
+
+    clear() {
+        state.clearSessionCache();
+
+        state.data = JSON.parse(JSON.stringify(INITIAL_DATA));
+    },
+
+    async login(user, password) {
+        if (typeof user !== 'string') {
+            throw new Error('user must be string');
+        }
+        if (typeof password !== 'string') {
+            throw new Error('password must be string');
+        }
+
+        const method = 'POST';
+        const url = 'https://api.sekai.wark.io/login';
+
+        const fd = new FormData();
+        fd.set('_token', (await state.getCsrfToken()));
+        fd.set('email', user);
+        fd.set('password', password);
+
+        const resp = await m.request({
+            method,
+            url,
+            withCredentials: true,
+            data: fd,
+            deserialize: () => {},
+        });
+
+        // TODO
+    },
+
+    clearData(key) {
+        state.data = JSON.parse(JSON.stringify({
+            ...state.data,
+
+            [key]: undefined,
+        }));
+    },
+
+    getData(key, defaultValue={}) {
+        if (typeof key !== 'string') {
+            throw new Error('key must be string');
+        }
+        if (!Object.prototype.hasOwnProperty.call(state.data, key)) {
+            state.data[key] = defaultValue;
+        }
+
+        return state.data[key];
     },
 };
 

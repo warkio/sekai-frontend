@@ -7,22 +7,47 @@
 
 import m from '../../vendor/js/mithril.js';
 
+import { state } from '../state.js';
+
+const STATE_KEY = 'loginPage';
+
 const LoginPage = {
     view: () => {
+        const s = state.getData(STATE_KEY, {
+            user: '',
+            password: '',
+        });
+
         return m('form.login', {
             onsubmit: (e) => {
                 e.preventDefault();
 
-                // TODO
+                const {
+                    user,
+                    password,
+                } = s;
+
+                state.login(user, password)
+                    .then((result) => {
+                        console.log(result);
+                    });
             },
         }, [
-            m('input[type="text"]#input-email', {
+            m('input[type="text"]', {
                 tabindex: 1,
                 placeholder: 'Email',
+                oninput: m.withAttr('value', (value) => {
+                    s.user = value;
+                }),
+                value: s.user,
             }),
             m('input[type="password"]', {
                 tabindex: 2,
                 placeholder: 'Password',
+                oninput: m.withAttr('value', (value) => {
+                    s.password = value;
+                }),
+                value: s.password,
             }),
             m('button[type="submit"]', {
                 tabindex: 3,
