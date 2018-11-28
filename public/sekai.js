@@ -31,6 +31,12 @@ m.route(document.body, '/', {
             await state.refreshSession();
         },
         render: () => {
+            if (state.data.user) {
+                m.route.set('/');
+
+                return;
+            }
+
             state.setCurrentRouteName('login');
             state.setTitle('Login');
 
@@ -42,10 +48,24 @@ m.route(document.body, '/', {
             await state.refreshSession();
         },
         render: () => {
+            if (state.data.user) {
+                m.route.set('/');
+
+                return;
+            }
+
             state.setCurrentRouteName('register');
             state.setTitle('Register');
 
             return m(Layout, m(RegisterPage));
+        },
+    },
+    '/logout': {
+        onmatch: async () => {
+            await state.logout();
+        },
+        render: () => {
+            m.route.set('/');
         },
     },
 });

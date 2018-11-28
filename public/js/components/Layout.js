@@ -26,12 +26,24 @@ function activeLinkIfRoute(expectedRouteName, className = 'active') {
 
 const HeaderNav = {
     view: () => {
-        // FIXME
-        const isLoggedIn = false;
+        const user = state.getData('user');
 
         let rightNav = null;
-        if (isLoggedIn) {
-            // TODO
+        if (user) {
+            rightNav = m('ul.right', [
+                m('li', {
+                    class: activeLinkIfRoute('account'),
+                }, [
+                    m('a[href="/account"]', {
+                        oncreate: m.route.link,
+                    }, user.name),
+                ]),
+                m('li', [
+                    m('a[href="/logout"]', {
+                        oncreate: m.route.link,
+                    }, 'Log out'),
+                ]),
+            ]);
         } else {
             rightNav = m('ul.right', [
                 m('li', {

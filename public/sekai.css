@@ -182,3 +182,9 @@ main > form.login button {
 	cursor: pointer;
 	margin-top: 10px;
 }
+main > form.login input[disabled],
+main > form.login button[disabled] {
+	cursor: default;
+	color: #999;
+	opacity: .5;
+}

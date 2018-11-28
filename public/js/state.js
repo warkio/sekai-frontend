@@ -26,6 +26,7 @@ const SESSION_CACHE_TTL = 10 * 1000;
 
 const INITIAL_DATA = {
     token: null,
+    user: null,
 };
 
 const state = {
@@ -87,11 +88,33 @@ const state = {
         if (state.sessionLastCheckedAt === null || Date.now() - state.sessionLastCheckedAt > SESSION_CACHE_TTL) {
             await state.getCsrfToken();
             state.sessionLastCheckedAt = Date.now();
+
+            await state.refreshUserData();
         }
+    },
+
+    async refreshUserData() {
+        const method = 'GET';
+        const url = resolve('/user');
+
+        const resp = await m.request({
+            method,
+            url,
+            withCredentials: true,
+        });
+
+        if (Object.keys(resp).length > 0) {
+            state.data.user = JSON.parse(JSON.stringify(resp));
+        } else {
+            state.data.user = null;
+        }
+
+        return state.data.user;
     },
 
     clearSessionCache() {
         state.sessionLastCheckedAt = null;
+        state.data.user = null;
     },
 
     clear() {
@@ -109,7 +132,7 @@ const state = {
         }
 
         const method = 'POST';
-        const url = 'https://api.sekai.wark.io/login';
+        const url = resolve('/login');
 
         const fd = new FormData();
         fd.set('_token', (await state.getCsrfToken()));
@@ -124,7 +147,27 @@ const state = {
             deserialize: () => {},
         });
 
-        // TODO
+        await state.clearSessionCache();
+
+        // TODO: Return boolean indicating success or failure.
+    },
+
+    async logout() {
+        const method = 'POST';
+        const url = resolve('/logout');
+
+        const fd = new FormData();
+        fd.set('_token', (await state.getCsrfToken()));
+
+        const resp = await m.request({
+            method,
+            url,
+            withCredentials: true,
+            data: fd,
+            deserialize: () => {},
+        });
+
+        state.clear();
     },
 
     clearData(key) {
@@ -135,7 +178,7 @@ const state = {
         }));
     },
 
-    getData(key, defaultValue={}) {
+    getData(key, defaultValue=null) {
         if (typeof key !== 'string') {
             throw new Error('key must be string');
         }

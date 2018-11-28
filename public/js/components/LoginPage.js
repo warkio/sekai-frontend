@@ -16,6 +16,7 @@ const LoginPage = {
         const s = state.getData(STATE_KEY, {
             user: '',
             password: '',
+            isLoggingIn: false,
         });
 
         return m('form.login', {
@@ -25,15 +26,29 @@ const LoginPage = {
                 const {
                     user,
                     password,
+                    isLoggingIn,
                 } = s;
 
+                if (isLoggingIn) {
+                    return;
+                }
+
+                s.isLoggingIn = true;
                 state.login(user, password)
                     .then((result) => {
-                        console.log(result);
+                        m.route.set('/');
+                    })
+                    .catch((err) => {
+                        // TODO
+                        console.error(err.stack);
+                    })
+                    .then(() => {
+                        s.isLoggingIn = false;
                     });
             },
         }, [
             m('input[type="text"]', {
+                disabled: s.isLoggingIn,
                 tabindex: 1,
                 placeholder: 'Email',
                 oninput: m.withAttr('value', (value) => {
@@ -42,6 +57,7 @@ const LoginPage = {
                 value: s.user,
             }),
             m('input[type="password"]', {
+                disabled: s.isLoggingIn,
                 tabindex: 2,
                 placeholder: 'Password',
                 oninput: m.withAttr('value', (value) => {
@@ -50,6 +66,7 @@ const LoginPage = {
                 value: s.password,
             }),
             m('button[type="submit"]', {
+                disabled: s.isLoggingIn,
                 tabindex: 3,
             }, [
                 'Log in',
