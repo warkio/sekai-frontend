@@ -18,6 +18,7 @@ m.route(document.body, '/', {
     '/': {
         onmatch: async () => {
             await state.refreshSession();
+            await state.updateForumListPage();
         },
         render: () => {
             state.setCurrentRouteName('forumList');

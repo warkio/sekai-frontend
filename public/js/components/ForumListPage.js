@@ -7,11 +7,79 @@
 
 import m from '../../vendor/js/mithril.js';
 
+import { state } from '../state.js';
+
+const STATE_KEY = 'forumListPage';
+
+const ForumCategorySection = {
+    oninit: (vnode) => {
+        const { data } = vnode.attrs;
+
+        vnode.state.id = data.id;
+        vnode.state.title = data.name;
+    },
+    view: (vnode) => {
+        const s = vnode.state;
+
+        return m('section', [
+            m('h4', [
+                m('a', {
+                    href: `/sections/${s.id}`,
+                    oncreate: m.route.link,
+                }, s.title)
+            ]),
+        ]);
+    },
+};
+
+const ForumCategory = {
+    oninit: (vnode) => {
+        const { data } = vnode.attrs;
+
+        vnode.state.id = data.id;
+        vnode.state.title = data.name;
+        vnode.state.sections = data.sections;
+    },
+    view: (vnode) => {
+        const s = vnode.state;
+
+        const sections = s.sections.map(rawSection => (
+            m(ForumCategorySection, {
+                data: rawSection,
+            })
+        ));
+
+        return m(`section#category-${s.id}.category`, [
+            m('h3', [
+                m('a', {
+                    href: `/categories/${s.id}`,
+                    oncreate: m.route.link,
+                }, s.title)
+            ]),
+            ...sections,
+        ]);
+    },
+};
+
 const ForumListPage = {
     view: () => {
-        return m('.container', [
-            // TODO
-        ]);
+        const s = state.getData(STATE_KEY, {
+            categories: [],
+        });
+
+        const categories = s.categories.map(rawCategory => (
+            m(
+                ForumCategory,
+                {
+                    data: rawCategory,
+                },
+                rawCategory.sections.map(rawSection => (
+                    m(ForumCategorySection)
+                )
+            ))
+        ));
+
+        return m('.container', categories);
     },
 };
 

@@ -188,6 +188,26 @@ const state = {
 
         return state.data[key];
     },
+
+    async updateForumListPage() {
+        const method = 'GET';
+        const url = resolve('/categories');
+
+        const resp = await m.request({
+            method,
+            url,
+            withCredentials: true,
+        });
+
+        const categories = resp.content;
+        if (Array.isArray(categories)) {
+            state.data.forumListPage = {
+                categories,
+            };
+        } else {
+            state.data.forumListPage = null;
+        }
+    },
 };
 
 export { state };
