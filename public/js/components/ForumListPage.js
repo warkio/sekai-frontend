@@ -21,7 +21,7 @@ const ForumCategorySection = {
     view: (vnode) => {
         const s = vnode.state;
 
-        return m('section', [
+        return m(`section#section-${s.id}.section`, [
             m('h4', [
                 m('a', {
                     href: `/sections/${s.id}`,
@@ -51,10 +51,7 @@ const ForumCategory = {
 
         return m(`section#category-${s.id}.category`, [
             m('h3', [
-                m('a', {
-                    href: `/categories/${s.id}`,
-                    oncreate: m.route.link,
-                }, s.title)
+                s.title,
             ]),
             ...sections,
         ]);
@@ -75,11 +72,11 @@ const ForumListPage = {
                 },
                 rawCategory.sections.map(rawSection => (
                     m(ForumCategorySection)
-                )
-            ))
+                ))
+            )
         ));
 
-        return m('.container', categories);
+        return m('#forum-list.container', categories);
     },
 };
 

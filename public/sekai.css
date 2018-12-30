@@ -188,3 +188,66 @@ main > form.login button[disabled] {
 	color: #999;
 	opacity: .5;
 }
+
+table th.collapse,
+table td.collapse {
+	width: 0;
+}
+
+table th.collapse {
+	white-space: nowrap;
+}
+
+table th.expand,
+table td.expand {
+	width: 100%;
+}
+
+table.threads {
+	text-align: left;
+	vertical-align: middle;
+}
+
+#forum-list {
+	--outer-spacing: 50px;
+
+	margin-top: var(--outer-spacing);
+	margin-bottom: var(--outer-spacing)
+}
+
+#forum-list .category {
+	border: 1px solid var(--header-background);
+	background: #2a2a2a;
+}
+
+#forum-list .category + .category {
+	margin-top: 30px;
+}
+
+#forum-list .category h3 {
+	margin: 0;
+	padding: .8rem;
+	background: var(--header-background);
+}
+
+#forum-list .category .section {
+	padding: .8rem;
+	margin: 0;
+}
+
+#forum-list .category .section + .section {
+	border-top: 1px solid var(--header-background);
+}
+
+#forum-list .category .section h4 {
+	margin: 0;
+	padding: 0;
+}
+
+#forum-list .category .section h4 a,
+#forum-list .category .section h4 a:link,
+#forum-list .category .section h4 a:visited,
+#forum-list .category .section h4 a:hover,
+#forum-list .category .section h4 a:active {
+	text-decoration: none;
+}

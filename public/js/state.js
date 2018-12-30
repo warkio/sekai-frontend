@@ -10,19 +10,47 @@ import m from '../vendor/js/mithril.js';
 const API_URL_PREFIX = 'https://api.sekai.wark.io/';
 const APP_NAME = 'Sekai';
 
-function resolve(path) {
+function resolve(path, queryParams = {}) {
     if (typeof path !== 'string') {
         throw new Error('path must be string');
+    }
+    if (typeof queryParams !== 'object') {
+        throw new Error('queryParams must be object');
     }
 
     while (path.match(/^[\/\.]/)) {
         path = path.substr(1);
     }
 
-    return API_URL_PREFIX + path;
+    const qs = Object.keys(queryParams)
+        .map(key => ([
+            encodeURIComponent(key),
+            encodeURIComponent(queryParams[key]),
+        ]))
+        .map(pair => pair.join('='))
+        .join('&');
+
+    let result = API_URL_PREFIX + path;
+
+    if (qs.length > 0) {
+        result += '?' + qs;
+    }
+
+    return result;
 }
 
-const SESSION_CACHE_TTL = 10 * 1000;
+async function httpGet(path, queryParams) {
+    const method = 'GET';
+    const url = resolve(path, queryParams);
+
+    return m.request({
+        method,
+        url,
+        withCredentials: true,
+    });
+}
+
+const SESSION_CACHE_TTL = 1 * 60 * 1000;
 
 const INITIAL_DATA = {
     token: null,
@@ -70,14 +98,7 @@ const state = {
     },
 
     async getCsrfToken() {
-        const method = 'GET';
-        const url = resolve('/token');
-
-        const { token } = await m.request({
-            method,
-            url,
-            withCredentials: true,
-        });
+        const { token } = await httpGet('/token');
 
         state.csrfToken = token;
 
@@ -86,22 +107,13 @@ const state = {
 
     async refreshSession() {
         if (state.sessionLastCheckedAt === null || Date.now() - state.sessionLastCheckedAt > SESSION_CACHE_TTL) {
-            await state.getCsrfToken();
-            state.sessionLastCheckedAt = Date.now();
-
             await state.refreshUserData();
+            state.sessionLastCheckedAt = Date.now();
         }
     },
 
     async refreshUserData() {
-        const method = 'GET';
-        const url = resolve('/user');
-
-        const resp = await m.request({
-            method,
-            url,
-            withCredentials: true,
-        });
+        const resp = await httpGet('/user');
 
         if (Object.keys(resp).length > 0) {
             state.data.user = JSON.parse(JSON.stringify(resp));
@@ -190,14 +202,7 @@ const state = {
     },
 
     async updateForumListPage() {
-        const method = 'GET';
-        const url = resolve('/categories');
-
-        const resp = await m.request({
-            method,
-            url,
-            withCredentials: true,
-        });
+        const resp = await httpGet('/categories');
 
         const categories = resp.content;
         if (Array.isArray(categories)) {
@@ -206,6 +211,77 @@ const state = {
             };
         } else {
             state.data.forumListPage = null;
+        }
+    },
+
+    async getThreads(sectionId, page = 1) {
+        if (!Number.isInteger(sectionId)) {
+            throw new Error('sectionId must be integer');
+        }
+        if (!Number.isInteger(page)) {
+            throw new Error('page must be integer');
+        }
+
+        const resp = await httpGet('/threads', {
+            'section-id': sectionId,
+            page,
+        });
+
+        let threads = resp.content;
+        if (!Array.isArray(threads)) {
+            threads = null;
+        }
+
+        let pinnedThreads = resp.pinned;
+        if (!Array.isArray(pinnedThreads)) {
+            pinnedThreads = null;
+        }
+
+        if (threads || pinnedThreads) {
+            state.data.threadListPage = {
+                pinnedThreads,
+                threads,
+            };
+        } else {
+            state.data.threadListPage = null;
+        }
+    },
+
+    async getPosts(threadId, page = 1) {
+        if (!Number.isInteger(threadId)) {
+            throw new Error('threadId must be integer');
+        }
+        if (!Number.isInteger(page)) {
+            throw new Error('page must be integer');
+        }
+
+        const resp = await httpGet('/posts', {
+            'thread-id': threadId,
+            page,
+        });
+
+        const posts = resp.content
+            .map(p => ({
+                ...p,
+
+                user: {
+                    id: p.userId,
+
+                    ...resp.users[p.userId],
+                },
+            }));
+
+        const thread = {
+            title: posts[0].threadName,
+        };
+
+        if (Array.isArray(posts)) {
+            state.data.postListPage = {
+                thread,
+                posts,
+            };
+        } else {
+            state.data.postListPage = null;
         }
     },
 };
