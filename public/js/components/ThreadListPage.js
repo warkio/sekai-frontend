@@ -28,34 +28,32 @@ const SectionThread = {
         const s = vnode.state;
         const { author } = s;
 
-        console.log(s);
-
         return m('tr', [
             m('td.collapse', [
                 // Image based on read/unread state.
             ]),
             m('td.expand', [
-                m('p', [
+                m('p.post', [
                     m('a', {
                         href: `/threads/${s.id}`,
                         oncreate: m.route.link,
                     }, s.title)
                 ]),
-                m('p', [
+                m('p.post-author', [
+                    'by ',
                     m('a', {
                         href: `/users/${author.id}`,
                         oncreate: m.route.link,
                     }, author.name),
                 ]),
             ]),
-            m('td.collapse', [
-                'Last post by ',
+            m('td.collapse.last-post-column', [
+                formatTime(s.lastPost.timestamp),
+                ' by ',
                 m('a', {
                     href: `/users/${s.lastPost.author.id}`,
                     oncreate: m.route.link,
                 }, s.lastPost.author.name),
-                ' ',
-                formatTime(s.lastPost.timestamp),
             ]),
         ]);
     },
@@ -82,14 +80,14 @@ const ThreadListPage = {
             pinnedThreadsWrapper = m('table.pinned-threads', pinnedThreads);
         }
 
-        return m('.container', [
+        return m('#thread-list.container', [
             pinnedThreadsWrapper,
 
             m('table.threads', [
                 m('thead', [
                     m('tr', [
                         m('th.collapse', ''),
-                        m('th.expand', 'Thread'),
+                        m('th.expand', 'Title'),
                         m('th.collapse', 'Last post'),
                     ]),
                 ]),
@@ -98,5 +96,5 @@ const ThreadListPage = {
         ]);
     },
 };
-
+;
 export { ThreadListPage };

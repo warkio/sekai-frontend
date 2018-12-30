@@ -192,9 +192,6 @@ main > form.login button[disabled] {
 table th.collapse,
 table td.collapse {
 	width: 0;
-}
-
-table th.collapse {
 	white-space: nowrap;
 }
 
@@ -208,7 +205,9 @@ table.threads {
 	vertical-align: middle;
 }
 
-#forum-list {
+#forum-list,
+#thread-list,
+#post-list {
 	--outer-spacing: 50px;
 
 	margin-top: var(--outer-spacing);
@@ -250,4 +249,69 @@ table.threads {
 #forum-list .category .section h4 a:hover,
 #forum-list .category .section h4 a:active {
 	text-decoration: none;
+}
+
+#thread-list table {
+	border-collapse: collapse;
+	font-size: .9rem;
+	line-height: 1.2em;
+}
+
+#thread-list table thead {
+	background: var(--header-background);
+	border: 1px solid var(--header-background);
+	padding: .8rem;
+}
+
+#thread-list table thead tr th {
+	padding: .5rem;
+}
+
+#thread-list table tbody {
+	background: #2a2a2a;
+	border: 1px solid var(--header-background);
+	padding: .8rem;
+}
+
+#thread-list table tbody tr:hover {
+	background: #2f2f2f;
+}
+#thread-list table tbody tr + tr {
+	border-top: 1px solid var(--header-background);
+}
+
+#thread-list table tbody tr td {
+	padding: .5rem;
+}
+
+#thread-list table tbody tr td a,
+#thread-list table tbody tr td a:link,
+#thread-list table tbody tr td a:visited,
+#thread-list table tbody tr td a:hover,
+#thread-list table tbody tr td a:active {
+	text-decoration: none;
+}
+
+#thread-list table tbody tr td .post {
+	margin: 0;
+	padding: 0;
+	font-size: 1.1em;
+}
+
+#thread-list table tbody tr td .post-author a,
+#thread-list table tbody tr td .post-author a:link,
+#thread-list table tbody tr td .post-author a:visited,
+#thread-list table tbody tr td .post-author a:hover,
+#thread-list table tbody tr td .post-author a:active {
+	text-decoration: underline;
+}
+
+#thread-list table tbody tr td .post-author {
+	font-size: .8em;
+	margin: 0;
+	padding: 0;
+}
+
+#thread-list table tbody tr td.last-post-column {
+	font-size: .8em;
 }
