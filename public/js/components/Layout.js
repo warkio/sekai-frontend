@@ -80,9 +80,17 @@ const HeaderNav = {
 
 const Footer = {
     view: () => {
+        const firstYear = 2018;
+        const currentYear = new Date().getUTCFullYear();
+
+        let yearRange = `${firstYear}-${currentYear}`;
+        if (firstYear === currentYear) {
+            yearRange = currentYear.toString();
+        }
+
         return m('.container', [
             m('p', [
-                'Copyright © 2018 ',
+                `Copyright © ${yearRange} `,
                 m('a[href="https://wark.io/"]', {
                     oncreate: m.route.link,
                 }, 'wark.io'),
