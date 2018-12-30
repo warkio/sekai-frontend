@@ -75,14 +75,26 @@ const ThreadListPage = {
         const pinnedThreads = s.pinnedThreads.map(mapThreads);
         const threads = s.threads.map(mapThreads);
 
-        let pinnedThreadsWrapper = null;
-        if (pinnedThreads.length > 0) {
-            pinnedThreadsWrapper = m('table.pinned-threads', pinnedThreads);
+        const threadRows = [
+            ...pinnedThreads,
+            ...threads,
+        ];
+
+        let noThreadsMessage = null
+        if (threadRows.length === 0) {
+            noThreadsMessage = m('p', 'No threads.');
         }
 
-        return m('#thread-list.container', [
-            pinnedThreadsWrapper,
+        const breadcrumb = m('ul.breadcrumb', [
+            m('li', m('a', {
+                href: `/`,
+                oncreate: m.route.link,
+            }, 'Sekai')),
+            m('li', s.section.title),
+        ]);
 
+        return m('#thread-list.container', [
+            breadcrumb,
             m('table.threads', [
                 m('thead', [
                     m('tr', [
@@ -91,8 +103,9 @@ const ThreadListPage = {
                         m('th.collapse', 'Last post'),
                     ]),
                 ]),
-                m('tbody', threads),
+                m('tbody', threadRows),
             ]),
+            noThreadsMessage,
         ]);
     },
 };

@@ -237,14 +237,42 @@ const state = {
             pinnedThreads = null;
         }
 
+        const section = {
+            id: sectionId,
+            title: await state.getSectionTitle(sectionId),
+        };
+
         if (threads || pinnedThreads) {
             state.data.threadListPage = {
                 pinnedThreads,
                 threads,
+                section,
             };
         } else {
             state.data.threadListPage = null;
         }
+    },
+
+    async getSectionTitle(sectionId) {
+        if (!Number.isInteger(sectionId)) {
+            throw new Error('sectionId must be integer');
+        }
+        if (!state.data.forumListPage) {
+            await state.updateForumListPage();
+        }
+
+        const { categories } = state.data.forumListPage;
+        for (let i = 0; i < categories.length; i++) {
+            const { sections } = categories[i];
+            for (let j = 0; j < sections.length; j++) {
+                const section = sections[j];
+                if (section.id === sectionId) {
+                    return section.name;
+                }
+            }
+        }
+
+        return null;
     },
 
     async getPosts(threadId, page = 1) {

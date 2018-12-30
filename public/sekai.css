@@ -315,3 +315,22 @@ table.threads {
 #thread-list table tbody tr td.last-post-column {
 	font-size: .8em;
 }
+
+ul.breadcrumb {
+	display: block;
+	list-style-type: none;
+	margin: 1rem 0;
+	padding: 0;
+}
+
+ul.breadcrumb li {
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+}
+
+ul.breadcrumb li + li::before {
+	display: inline;
+	content: '»';
+	margin: 0 .5em;
+}
