@@ -93,18 +93,20 @@ const ThreadListPage = {
             m('li', s.section.title),
         ]);
 
+        const threadsTable = m('table.threads', [
+            m('thead', [
+                m('tr', [
+                    m('th.collapse', ''),
+                    m('th.expand', 'Title'),
+                    m('th.collapse', 'Last post'),
+                ]),
+            ]),
+            m('tbody', threadRows),
+        ]);
+
         return m('#thread-list.container', [
             breadcrumb,
-            m('table.threads', [
-                m('thead', [
-                    m('tr', [
-                        m('th.collapse', ''),
-                        m('th.expand', 'Title'),
-                        m('th.collapse', 'Last post'),
-                    ]),
-                ]),
-                m('tbody', threadRows),
-            ]),
+            threadsTable,
             noThreadsMessage,
         ]);
     },
