@@ -39,6 +39,25 @@ const ThreadPost = {
                     oncreate: m.route.link,
                 }, s.author.name),
             ]),
+
+            m('table', [
+                m('tr', [
+                    m('td', 'Level'),
+                    m('td', s.author.level),
+                ]),
+                m('tr', [
+                    m('td', 'EXP'),
+                    m('td', s.author.exp),
+                ]),
+                m('tr', [
+                    m('td', 'On-role money'),
+                    m('td', s.author.onRolMoney),
+                ]),
+                m('tr', [
+                    m('td', 'Off-role money'),
+                    m('td', s.author.offRolMoney),
+                ]),
+            ]),
         ]);
 
         const postContent = m('div.post-content', [

@@ -411,6 +411,22 @@ ul.pagination li a:hover {
 	font-weight: bold;
 }
 
+.thread-post .userinfo table {
+	border-collapse: collapse;
+	font-size: .8rem;
+	width: 100%;
+}
+
+.thread-post .userinfo table tr td {
+	padding: 0 .5rem;
+}
+
+.thread-post .userinfo table tr td:first-of-type {
+	font-weight: bold;
+	width: 0;
+	white-space: nowrap;
+}
+
 .thread-post .post-content {
 	grid-area: postcontent;
 }
