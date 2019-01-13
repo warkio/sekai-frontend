@@ -340,7 +340,8 @@ const state = {
 
         const postsPerPage = 15;
         const currentPage = page|0;
-        const totalPages = Math.ceil(resp.total / postsPerPage);
+        const totalPosts = resp.total;
+        const totalPages = Math.ceil(totalPosts / postsPerPage);
 
         if (Array.isArray(posts)) {
             state.data.postListPage = {
@@ -350,6 +351,7 @@ const state = {
                 currentPage,
                 postsPerPage,
                 totalPages,
+                totalPosts,
             };
         } else {
             state.data.postListPage = null;

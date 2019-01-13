@@ -126,9 +126,22 @@ const PostListPage = {
             nextPageLink,
         ]);
 
+        let postsWord = 'post';
+        if (s.totalPosts !== 1) {
+            postsWord += 's';
+        }
+
+        let pagesWord = 'page';
+        if (s.totalPages !== 1) {
+            pagesWord += 's';
+        }
+
+        const postAmount = m('small', `${s.totalPosts} ${postsWord} in ${s.totalPages} ${pagesWord}`);
+
         return m('#post-list.container', [
             breadcrumb,
             m('h3.thread-title', s.thread.title),
+            postAmount,
             m('.posts', posts),
             pagination,
         ]);

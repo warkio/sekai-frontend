@@ -371,6 +371,10 @@ ul.pagination li a:hover {
 	background: #2f2f2f;
 }
 
+#post-list .posts {
+	margin-top: 1rem;
+}
+
 .thread-post {
 	background: #2a2a2a;
 	border: 2px solid #343a40;
