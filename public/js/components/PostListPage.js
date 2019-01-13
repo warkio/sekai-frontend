@@ -42,7 +42,9 @@ const ThreadPost = {
         ]);
 
         const postContent = m('div.post-content', [
-            m('time.post-timestamp', s.timestamp.toString()),
+            m('time.post-timestamp', {
+                datetime: s.timestamp.toISOString(),
+            }, s.timestamp.toString()),
             'Post content.'
         ]);
 

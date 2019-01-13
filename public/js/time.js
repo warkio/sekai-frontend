@@ -52,6 +52,7 @@ function formatTime(d) {
 
         const parts = new Date(ut).toISOString().split('T');
         timeStr = parts[0] + ' ' + parts[1].split(':').slice(0, 2).join(':');
+        timeStr += ' (UTC)';
     }
 
     return [
