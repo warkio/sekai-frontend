@@ -64,6 +64,7 @@ const ThreadListPage = {
         const s = state.getData(STATE_KEY, {
             pinnedThreads: [],
             threads: [],
+            threadPerPage: 15,
         });
 
         function mapThreads(rawThread) {

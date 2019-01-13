@@ -50,6 +50,18 @@ async function httpGet(path, queryParams) {
     });
 }
 
+async function httpGetBackground(path, queryParams) {
+    const method = 'GET';
+    const url = resolve(path, queryParams);
+
+    return m.request({
+        method,
+        url,
+        withCredentials: true,
+        background: true,
+    });
+}
+
 const SESSION_CACHE_TTL = 1 * 60 * 1000;
 
 const INITIAL_DATA = {
@@ -162,6 +174,8 @@ const state = {
         await state.clearSessionCache();
 
         // TODO: Return boolean indicating success or failure.
+
+        return true;
     },
 
     async logout() {
@@ -202,7 +216,7 @@ const state = {
     },
 
     async updateForumListPage() {
-        const resp = await httpGet('/categories');
+        const resp = await httpGetBackground('/categories');
 
         const categories = resp.content;
         if (Array.isArray(categories)) {
@@ -242,11 +256,14 @@ const state = {
             title: await state.getSectionTitle(sectionId),
         };
 
+        const threadsPerPage = 15;
+
         if (threads || pinnedThreads) {
             state.data.threadListPage = {
                 pinnedThreads,
                 threads,
                 section,
+                threadsPerPage,
             };
         } else {
             state.data.threadListPage = null;
@@ -303,10 +320,27 @@ const state = {
             title: posts[0].threadName,
         };
 
+        let sectionId = null;
+        if (posts.length > 0) {
+            sectionId = posts[0].sectionId;
+        }
+
+        let section = null;
+        if (sectionId !== null) {
+            section = {
+                id: sectionId,
+                title: await state.getSectionTitle(sectionId),
+            };
+        }
+
+        const postsPerPage = 15;
+
         if (Array.isArray(posts)) {
             state.data.postListPage = {
                 thread,
                 posts,
+                section,
+                postsPerPage,
             };
         } else {
             state.data.postListPage = null;

@@ -53,6 +53,8 @@ const PostListPage = {
         const s = state.getData(STATE_KEY, {
             thread: null,
             posts: [],
+            postsPerPage: 15,
+            section: null,
         });
 
         const posts = s.posts.map(rawPost => (
@@ -61,7 +63,20 @@ const PostListPage = {
             })
         ));
 
-        return m('.container', [
+        const breadcrumb = m('ul.breadcrumb', [
+            m('li', m('a', {
+                href: `/`,
+                oncreate: m.route.link,
+            }, 'Sekai')),
+            m('li', m('a', {
+                href: `/sections/${s.section.id}`,
+                oncreate: m.route.link,
+            }, s.section.title)),
+            m('li', s.thread.title),
+        ]);
+
+        return m('#post-list.container', [
+            breadcrumb,
             m('h3.thread-title', s.thread.title),
             m('.posts', posts),
         ]);
