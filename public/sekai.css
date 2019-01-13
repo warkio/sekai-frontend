@@ -389,6 +389,10 @@ ul.pagination li a:hover {
 	;
 }
 
+.thread-post + .thread-post {
+	margin-top: 30px;
+}
+
 .thread-post .userinfo,
 .thread-post .post-content {
 	padding: .5rem;
