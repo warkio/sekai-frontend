@@ -111,14 +111,14 @@ const PostListPage = {
             nextPageLink = m('li', m('a', {
                 href: m.route.get() + '?page=' + nextPage,
                 oncreate: m.route.link,
-            }, 'Next page'));
+            }, 'Newer posts ⟶'));
         }
 
         if (previousPage >= 1) {
             previousPageLink = m('li', m('a', {
                 href: m.route.get() + '?page=' + previousPage,
                 oncreate: m.route.link,
-            }, 'Previous page'));
+            }, '⟵ Older posts'));
         }
 
         const pagination = m('ul.pagination', [
