@@ -18,6 +18,7 @@ const ThreadPost = {
         vnode.state.id = data.id;
         vnode.state.title = data.name;
         vnode.state.author = data.user;
+        vnode.state.timestamp = data.timestamp;
     },
     view: (vnode) => {
         const s = vnode.state;
@@ -41,7 +42,7 @@ const ThreadPost = {
         ]);
 
         const postContent = m('div.post-content', [
-            m('time.post-timestamp', s.timestamp),
+            m('time.post-timestamp', s.timestamp.toString()),
             'Post content.'
         ]);
 

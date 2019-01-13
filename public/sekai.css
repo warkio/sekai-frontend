@@ -414,3 +414,13 @@ ul.pagination li a:hover {
 .thread-post .post-content {
 	grid-area: postcontent;
 }
+
+.thread-post .post-content .post-timestamp {
+	border-bottom: 1px solid #343a40;
+	display: block;
+	font-size: .8em;
+	margin-bottom: 1em;
+	opacity: .5;
+	padding-bottom: .5rem;
+	text-align: right;
+}

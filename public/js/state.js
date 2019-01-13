@@ -318,6 +318,7 @@ const state = {
 
                     ...resp.users[p.userId],
                 },
+                timestamp: new Date(p.date),
             }));
 
         const thread = {
