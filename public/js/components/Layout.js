@@ -91,9 +91,7 @@ const Footer = {
         return m('.container', [
             m('p', [
                 `Copyright © ${yearRange} `,
-                m('a[href="https://wark.io/"]', {
-                    oncreate: m.route.link,
-                }, 'wark.io'),
+                m('a[href="https://wark.io/"]', 'wark.io'),
             ]),
         ]);
     },
