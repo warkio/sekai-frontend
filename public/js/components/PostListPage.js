@@ -21,29 +21,33 @@ const ThreadPost = {
     },
     view: (vnode) => {
         const s = vnode.state;
-        const { author } = s;
 
-        return m('tr', [
-            m('td.collapse', [
-                // Image based on read/unread state.
+        const userInfo = m('aside.userinfo', [
+            m('a', {
+                href: `/users/${s.author.id}`,
+                oncreate: m.route.link,
+            }, [
+                m('img.user-profile-pic', {
+                    src: s.author.avatar || '/img/no-image.jpg',
+                }),
             ]),
-            m('td.expand', [
-                m('p', [
-                    m('a', {
-                        href: `/threads/${s.id}`,
-                        oncreate: m.route.link,
-                    }, s.title)
-                ]),
-                m('p', [
-                    m('a', {
-                        href: `/users/${author.id}`,
-                        oncreate: m.route.link,
-                    }, author.name),
-                ]),
+
+            m('.user-link-wrapper', [
+                m('a.user-link', {
+                    href: `/users/${s.author.id}`,
+                    oncreate: m.route.link,
+                }, s.author.name),
             ]),
-            m('td.collapse', [
-                // Last post information.
-            ]),
+        ]);
+
+        const postContent = m('div.post-content', [
+            m('time.post-timestamp', s.timestamp),
+            'Post content.'
+        ]);
+
+        return m(`article#post-${s.id}.thread-post`, [
+            postContent,
+            userInfo,
         ]);
     },
 };

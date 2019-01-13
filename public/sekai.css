@@ -370,3 +370,47 @@ ul.pagination li a:active {
 ul.pagination li a:hover {
 	background: #2f2f2f;
 }
+
+.thread-post {
+	background: #2a2a2a;
+	border: 2px solid #343a40;
+	display: grid;
+	grid-gap: 0;
+	grid-template-columns: 200px 1fr;
+	min-height: 300px;
+
+	grid-template-areas:
+		'userinfo postcontent'
+	;
+}
+
+.thread-post .userinfo,
+.thread-post .post-content {
+	padding: .5rem;
+}
+
+.thread-post .userinfo {
+	grid-area: userinfo;
+	border-right: 2px solid #343a40;
+}
+
+.thread-post .userinfo img {
+	max-height: 200%;
+	max-width: 100%;
+	display: block;
+}
+
+.thread-post .userinfo .user-link-wrapper {
+	text-align: center;
+	padding: .5rem;
+}
+
+.thread-post .userinfo .user-link {
+	text-decoration: none;
+	display: inline-block;
+	font-weight: bold;
+}
+
+.thread-post .post-content {
+	grid-area: postcontent;
+}
