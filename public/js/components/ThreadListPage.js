@@ -105,10 +105,36 @@ const ThreadListPage = {
             m('tbody', threadRows),
         ]);
 
+        const nextPage = s.currentPage + 1;
+        const previousPage = s.currentPage - 1;
+
+        let nextPageLink = null;
+        let previousPageLink = null;
+
+        if (nextPage <= s.totalPages) {
+            nextPageLink = m('li', m('a', {
+                href: m.route.get() + '?page=' + nextPage,
+                oncreate: m.route.link,
+            }, 'Older threads ⟶'));
+        }
+
+        if (previousPage >= 1) {
+            previousPageLink = m('li', m('a', {
+                href: m.route.get() + '?page=' + previousPage,
+                oncreate: m.route.link,
+            }, '⟵ Newer threads'));
+        }
+
+        const pagination = m('ul.pagination', [
+            previousPageLink,
+            nextPageLink,
+        ]);
+
         return m('#thread-list.container', [
             breadcrumb,
             threadsTable,
             noThreadsMessage,
+            pagination,
         ]);
     },
 };

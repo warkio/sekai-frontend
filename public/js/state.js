@@ -256,14 +256,18 @@ const state = {
             title: await state.getSectionTitle(sectionId),
         };
 
+        const currentPage = page|0;
         const threadsPerPage = 15;
+        const totalPages = Math.ceil(resp.total / threadsPerPage);
 
         if (threads || pinnedThreads) {
             state.data.threadListPage = {
                 pinnedThreads,
                 threads,
                 section,
+                currentPage,
                 threadsPerPage,
+                totalPages,
             };
         } else {
             state.data.threadListPage = null;
@@ -334,13 +338,17 @@ const state = {
         }
 
         const postsPerPage = 15;
+        const currentPage = page|0;
+        const totalPages = Math.ceil(resp.total / postsPerPage);
 
         if (Array.isArray(posts)) {
             state.data.postListPage = {
                 thread,
                 posts,
                 section,
+                currentPage,
                 postsPerPage,
+                totalPages,
             };
         } else {
             state.data.postListPage = null;

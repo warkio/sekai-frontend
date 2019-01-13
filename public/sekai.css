@@ -325,14 +325,20 @@ table.threads {
 	font-size: .8em;
 }
 
-ul.breadcrumb {
+ul.breadcrumb,
+ul.pagination {
 	display: block;
 	list-style-type: none;
 	margin: 1rem 0;
 	padding: 0;
 }
 
-ul.breadcrumb li {
+ul.pagination {
+	float: right;
+}
+
+ul.breadcrumb li,
+ul.pagination li {
 	margin: 0;
 	padding: 0;
 	display: inline-block;
@@ -342,4 +348,25 @@ ul.breadcrumb li + li::before {
 	display: inline;
 	content: '»';
 	margin: 0 .5em;
+}
+
+ul.pagination li + li {
+	margin: 0 0 0 .5em;
+}
+
+ul.pagination li a,
+ul.pagination li a:link,
+ul.pagination li a:visited,
+ul.pagination li a:hover,
+ul.pagination li a:active {
+	display: block;
+	margin: 0;
+	padding: 5px;
+	background: #2a2a2a;
+	border: 1px solid #343a40;
+	text-decoration: none;
+}
+
+ul.pagination li a:hover {
+	background: #2f2f2f;
 }

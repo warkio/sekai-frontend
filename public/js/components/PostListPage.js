@@ -75,10 +75,36 @@ const PostListPage = {
             m('li', s.thread.title),
         ]);
 
+        const nextPage = s.currentPage + 1;
+        const previousPage = s.currentPage - 1;
+
+        let nextPageLink = null;
+        let previousPageLink = null;
+
+        if (nextPage <= s.totalPages) {
+            nextPageLink = m('li', m('a', {
+                href: m.route.get() + '?page=' + nextPage,
+                oncreate: m.route.link,
+            }, 'Next page'));
+        }
+
+        if (previousPage >= 1) {
+            previousPageLink = m('li', m('a', {
+                href: m.route.get() + '?page=' + previousPage,
+                oncreate: m.route.link,
+            }, 'Previous page'));
+        }
+
+        const pagination = m('ul.pagination', [
+            previousPageLink,
+            nextPageLink,
+        ]);
+
         return m('#post-list.container', [
             breadcrumb,
             m('h3.thread-title', s.thread.title),
             m('.posts', posts),
+            pagination,
         ]);
     },
 };
