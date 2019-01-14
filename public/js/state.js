@@ -191,6 +191,7 @@ const state = {
             withCredentials: true,
             data: fd,
             deserialize: () => {},
+            background: true,
         });
 
         state.clear();
