@@ -381,14 +381,8 @@ ul.pagination li a:hover {
 	border: 2px solid #343a40;
 	display: grid;
 	grid-gap: 0;
-	grid-template-columns: 268px 1fr;
-	min-height: 300px;
 
-	grid-template-areas:
-		'userinfo postcontent'
-	;
 }
-
 .thread-post + .thread-post {
 	margin-top: 30px;
 }
@@ -438,6 +432,7 @@ ul.pagination li a:hover {
 
 .thread-post .post-content {
 	grid-area: postcontent;
+	min-height: 300px;
 }
 
 .thread-post .post-content .post-timestamp {
@@ -448,4 +443,37 @@ ul.pagination li a:hover {
 	opacity: .5;
 	padding-bottom: .5rem;
 	text-align: right;
+}
+
+@media (min-width: 768px) {
+	.thread-post {
+		grid-template-columns: 268px 1fr;
+		grid-template-areas:
+			'userinfo postcontent'
+		;
+	}
+}
+
+@media (max-width: 767px) {
+	.thread-post {
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			'userinfo'
+			'postcontent'
+		;
+	}
+	.thread-post .userinfo {
+		border: none;
+	}
+	.thread-post .userinfo img {
+		display: none;
+	}
+	.thread-post .post-content {
+		min-height: unset;
+	}
+	.thread-post .post-content .post-timestamp {
+		border-top: 1px solid #343a40;
+		padding-top: .5rem;
+		text-align: center;
+	}
 }
